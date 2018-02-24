@@ -2,22 +2,22 @@
 layout: blog_post
 title: 'Add Authentication to Your Angular PWA'
 author: mraible
-description: "In this article, I'll show you how you can lock down a Spring Boot app, then use a modern authentication protocol, in this case OpenID Connect (OIDC), to authenticate and gain access to its APIs."
+description: "In this article, I'll show you how you can lock down a Spring Boot app, then use a modern authentication protocol, in this case, OpenID Connect (OIDC), to authenticate and gain access to its APIs."
 tweets:
   - "Want to add user authentication to a Spring Boot + Angular app? This tutorial will hook you up!"
-  - "Spring Boot + Angular + PWA goodness + Okta = 💙 - happy authenticating y'all!"
+  - "Spring Boot + Angular + PWA goodness + Okta = 💙! Happy authenticating y'all!"
 tags: [pwa, progressive web app, angular, typescript, oidc, spring boot, java]
 ---
 
-You're developing a Progressive Web Application (PWA) and your service worker and web app manifest are working swimmingly. You've even taken the time to deploy it to a server with HTTPS and you're feeling pretty good about  things. But wait, you don't have any way of knowing who your users are! Don't you want to provide them with an opportunity to authenticate and tell you who they are? Once you know who they are, you can give them all kinds of personalization options, inspire them to ❤️ your app, and maybe even support your work!
+You're developing a Progressive Web Application (PWA), and your service worker and web app manifest are working swimmingly. You've even taken the time to deploy it to a server with HTTPS, and you're feeling pretty good about things. But wait, you don't have any way of knowing who your users are! Don't you want to provide them with an opportunity to authenticate and tell you who they are? Once you know who they are, you can give them all kinds of personalization options, inspire them to ❤️ your app, and maybe even support your work!
 
-In this article, I'll show you how you can lock down a Spring Boot app, then use a modern authentication protocol, in this case OpenID Connect (OIDC), to authenticate and gain access to its APIs. 
+In this article, I'll show you how you can lock down a Spring Boot app, then use a modern authentication protocol, in this case, OpenID Connect (OIDC), to authenticate and gain access to its APIs. 
 
 ## Secure Your Spring Boot App
 
-You might've heard that [Stormpath joined forces with Okta](https://www.okta.com/blog/2017/03/stormpath-welcome-to-Okta/) a few months ago (February 2017). Since the transition, we've been working hard to make the Stormpath SDKs work with Okta's API. The good news is we've made great progress! 
+You might've heard that [Stormpath joined forces with Okta](https://www.okta.com/blog/2017/03/stormpath-welcome-to-Okta/) a few months ago (February 2017). Since the transition, we've been working hard to make the Stormpath SDKs work with Okta's API. The good news is we've made significant progress! 
 
-In this example, you'll use Okta's Spring Boot Starter to add security to a Spring Boot app. Then I'll show you how you can use OIDC and Okta's Angular SDK in an Angular app to login and get data from the Spring Boot app. 
+In this example, you'll use Okta's Spring Boot Starter to add security to a Spring Boot app. Then I'll show you how you can use OIDC and Okta's Angular SDK in an Angular app to log in and get data from the Spring Boot app. 
 
 I recently created a Spring Boot app that provides a list of good beers, based on a pre-populated list. It filters out less-than-great beers and displays them in an Angular UI that displays the first animated GIF (from Giphy) that matches the beer name.
 
@@ -67,11 +67,11 @@ To begin, you'll need to create an Okta Developer account. This account is free 
 
 1. Head on over to <https://www.okta.com/developer/signup>
 2. Fill out the signup form, and click "Get Started"
-3. Within a few minutes you'll get a confirmation email, follow the instructions in the email to finish setting up your account
+3. Within a few minutes, you'll get a confirmation email, follow the instructions in the email to finish setting up your account
 
 Log in to your Okta Developer account and navigate to **Applications** > **Add Application**. Click **Single-Page App**, click **Next**, and give the app a name you’ll remember (e.g., "Angular PWA"). Change all instances of `localhost:8080` to `localhost:4200` and click **Done**.
 
-**TIP:** Add `http://localhost:4200` as a **Logout redirect URI** so Logout functionality works in your Angular app.
+**TIP:** Add `http://localhost:4200` as a **Logout redirect URI**, so log out functionality works in your Angular app.
 
 Copy the client ID into your `server/src/main/resources/application.properties` file. While you're in there, add a `okta.oauth2.issuer` property that matches your Okta domain. For example:
 
@@ -96,7 +96,7 @@ cd server
 ./mvnw spring-boot:run
 ```
 
-Navigate to `http://localhost:8080` and you'll see an access denied error.
+Navigate to `http://localhost:8080`, and you'll see an access denied error.
 
 {% img blog/angular-pwa-auth/spring-boot-access-denied.png alt:"Spring Boot Access Denied" width:"800" %}{: .center-image }
 
@@ -135,7 +135,7 @@ npm install
 ng serve
 ```
 
-If you receive an error like the one below, disable the warning using the instructions provided, or simply ignore it. You can upgrade your dependencies in `package.json`, but there's no guarantee that this tutorial will still work! ;)
+If you receive an error like the one below, disable the warning using the instructions provided, or just ignore it. You can upgrade your dependencies in `package.json`, but there's no guarantee that this tutorial will still work! ;)
 
 ```
 Your global Angular CLI version (1.7.0) is greater than your local
@@ -350,7 +350,7 @@ After making these changes, you should be able to run `ng serve` and see a login
 
 {% img blog/angular-pwa-auth/angular-login-button.png alt:"Angular Login Button" width:"800" %}{: .center-image }
 
-Click the **Login** button and sign-in with one of the user's that are configured in your Okta application.
+Click the **Login** button and sign-in with one of the users assigned in your Okta application.
 
 {% img blog/angular-pwa-auth/angular-okta-login.png alt:"Angular Okta Login" width:"800" %}{: .center-image }
  
@@ -396,7 +396,7 @@ Install it using npm:
 npm install @okta/okta-auth-js --save
 ```
 
-Change `HomeComponent` to import `OktaAuth` and modify its `template` so it has a sign-in form.
+Change `HomeComponent` to import `OktaAuth` and modify its `template`, so it has a sign-in form.
 
 {% raw %}
 ```typescript
@@ -560,7 +560,7 @@ After I got everything deployed, I used [Lighthouse](https://developers.google.c
 {% img blog/angular-pwa-auth/lighthouse-perfect-score.png alt:"Lighthouse Perfect Score" width:"800" %}{: .center-image }
 {: .center-image }
 
-**TIP:** [Joe Kutner](https://twitter.com/codefinger), Java Languages Owner at [Heroku](https://www.heroku.com/), created a [`heroku.sh`](https://github.com/oktadeveloper/okta-spring-boot-angular-pwa-example/blob/master/heroku.sh) script you can use to deploy this same application to Heroku. Thanks Joe!
+**TIP:** [Joe Kutner](https://twitter.com/codefinger), Java Languages Owner at [Heroku](https://www.heroku.com/), created a [`heroku.sh`](https://github.com/oktadeveloper/okta-spring-boot-angular-pwa-example/blob/master/heroku.sh) script you can use to deploy this same application to Heroku. Thanks, Joe!
 
 ## Happy Authenticating!
 
@@ -582,4 +582,4 @@ There's also a number of excellent resources by Google and Smashing Magazine:
 
 **Changelog:**
 
-* Feb 23, 2018: Updated to use Spring Boot 1.5.10 and Angular CLI 1.6.7. See the code changes in the [example app on GitHub](https://github.com/oktadeveloper/okta-spring-boot-angular-pwa-example/pull/7). Changes to this article can be viewed [okta/okta.github.io#1770](https://github.com/okta/okta.github.io/pull/1770).
+* Feb 23, 2018: Updated to use Spring Boot 1.5.10 and Angular CLI 1.6.7. See the code changes in the [example app on GitHub](https://github.com/oktadeveloper/okta-spring-boot-angular-pwa-example/pull/7). You can see changes to this article in [okta/okta.github.io#1794](https://github.com/okta/okta.github.io/pull/1794).
