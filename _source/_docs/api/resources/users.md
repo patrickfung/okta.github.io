@@ -2705,7 +2705,7 @@ curl -v -X POST \
 
 ## User-Consent Grant Operations
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 A consent represents a user's explicit permission to allow an application to access resources protected by scopes. Consent grants are different from tokens because a consent can outlast a token, and there can be multiple tokens with varying sets of scopes derived from a single consent. When an application comes back and needs to get a new access token, it may not need to prompt the user for consent if they have already consented to the specified scopes.
 Consent grants remain valid until the user manually revokes them, or until the user, application, authorization server or scope is deactivated or deleted.
@@ -2715,7 +2715,7 @@ Consent grants remain valid until the user manually revokes them, or until the u
 ### List Grants
 {:.api .api-operation}
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 {% api_operation get /api/v1/users/${userId}/grants %}
 
@@ -2799,7 +2799,7 @@ curl -v -X GET \
 ### Get a Grant
 {:.api .api-operation}
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 {% api_operation get /api/v1/users/${userId}/grants/${grantId} %}
 
@@ -2877,7 +2877,7 @@ curl -v -X GET \
 ### List Grants for a User-Client Combination
 {:.api .api-operation}
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 {% api_operation get /api/v1/users/${userId}/clients/${clientId}/grants %}
 
@@ -2956,7 +2956,7 @@ curl -v -X GET \
 ### Revoke All Grants for a User
 {:.api .api-operation}
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 {% api_operation delete /api/v1/users/${userId}/grants %}
 
@@ -2990,7 +2990,7 @@ HTTP/1.1 204 No Content
 ### Revoke a Grant for a User
 {:.api .api-operation}
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 {% api_operation delete /api/v1/users/${userId}/grants/${grantId} %}
 
@@ -3026,7 +3026,7 @@ HTTP/1.1 204 No Content
 ### Revoke Grants for User and Client
 {:.api .api-operation}
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 {% api_operation delete /api/v1/users/${userId}/clients/${clientId}/grants %}
 
@@ -3060,14 +3060,14 @@ HTTP/1.1 204 No Content
 
 ## User-Client Grant Reference Operations
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 Each grant references a user and a client.
 
 ### List User-Client Grant References
 {:.api .api-operation}
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 {% api_operation get /api/v1/users/${userId}/clients %}
 
@@ -3607,8 +3607,6 @@ The User model defines several read-only properties:
 | _links                | [link relations](#links-object) for the user&#8217;s current `status` | [JSON HAL](http://tools.ietf.org/html/draft-kelly-json-hal-06)                                                    | TRUE     | FALSE  | TRUE     |
 | _embedded             | embedded resources related to the user                                | [JSON HAL](http://tools.ietf.org/html/draft-kelly-json-hal-06)                                                   | TRUE     | FALSE  | TRUE     |
 
-{% beta %}
-
 >Note: Profile image is a {% api_lifecycle beta %} feature.
 
 During the profile image Beta, image property definitions in the schema are of the `Object` data type with an additional `extendedType` of `Image`.
@@ -3625,8 +3623,6 @@ Okta does not support uploading images via the Users API.  All operations in thi
 1)  When performing a full update, if the property is not passed, it is unset (if set).  The same applies if a partial update explicitly sets it to null.
 
 2)  When "updating" the value, it must be set to the value returned by a GET on that user (resulting in no change).  Any other value will not validate.
-
-{% endbeta %}
 
 Metadata properties such as `id`, `status`, timestamps, `_links`, and `_embedded` are only available after a user is created.
 
@@ -3689,8 +3685,8 @@ The default user profile is based on the [System for Cross-Domain Identity Manag
 | login             | unique identifier for the user (`username`)                                                                                        | String   | FALSE    | TRUE   | FALSE    | 5         | 100       | [RFC 6531 Section 3.3](http://tools.ietf.org/html/rfc6531#section-3.3)                                           |
 | email             | primary email address of user                                                                                                      | String   | FALSE    | TRUE   | FALSE    | 5         | 100       | [RFC 5322 Section 3.2.3](http://tools.ietf.org/html/rfc5322#section-3.2.3)                                       |
 | secondEmail       | secondary email address of user typically used for account recovery                                                                | String   | TRUE     | TRUE   | FALSE    | 5         | 100       | [RFC 5322 Section 3.2.3](http://tools.ietf.org/html/rfc5322#section-3.2.3)                                       |
-| firstName         | given name of the user (`givenName`)                                                                                               | String   | FALSE    | FALSE  | FALSE    | 1         | 50        |                                                                                                                  |
-| lastName          | family name of the user (`familyName`)                                                                                             | String   | FALSE    | FALSE  | FALSE    | 1         | 50        |                                                                                                                  |
+| firstName         | given name of the user (`givenName`)                                                                                               | String   | FALSE (default)    | FALSE  | FALSE    | 1         | 50        |                                                                                                                  |
+| lastName          | family name of the user (`familyName`)                                                                                             | String   | FALSE (default)   | FALSE  | FALSE    | 1         | 50        |                                                                                                                  |
 | middleName        | middle name(s) of the user                                                                                                         | String   | TRUE     | FALSE  | FALSE    |           |           |                                                                                                                  |
 | honorificPrefix   | honorific prefix(es) of the user, or title in most Western languages                                                               | String   | TRUE     | FALSE  | FALSE    |           |           |                                                                                                                  |
 | honorificSuffix   | honorific suffix(es) of the user                                                                                                   | String   | TRUE     | FALSE  | FALSE    |           |           |                                                                                                                  |
@@ -3728,6 +3724,9 @@ Okta has a default ambiguous name resolution policy for logins.  Users can login
 
 > Hint: Don't use a `login` with a `/` character.  Although `/` is a valid character according to [RFC 6531 section 3.3](http://tools.ietf.org/html/rfc6531#section-3.3), a user with this character in their `login` can't be fetched by `login` due to security risks with escaping this character in URI paths.
 For more information about `login`, see [Get User by ID](#get-user-with-id).
+
+##### Modifying Default Profile Properties
+The only permitted customization of the default profile is changing whether the `firstName` and `lastName` properties are nullable.  You can use the Profile Editor in the Admin UI or the [Schemas API](schemas) to make schema modifications.
 
 #### Custom Profile Properties
 
@@ -3879,7 +3878,7 @@ For an individual User result, the Links Object contains a full set of link rela
 
 ### User-Consent Grant Object
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 ~~~sh
 {
@@ -3936,6 +3935,8 @@ For an individual User result, the Links Object contains a full set of link rela
 
 #### User-Consent Grant Properties
 
+{% api_lifecycle ea %}
+
 | Property    | Description                                                                                                                    | Datatype                                                        |
 |:------------|:-------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------|
 | Id          | ID of this grant                                                                                                               | String                                                          |
@@ -3951,7 +3952,7 @@ For an individual User result, the Links Object contains a full set of link rela
 
 ### Client Grant Object
 
-{% api_lifecycle beta %}
+{% api_lifecycle ea %}
 
 ~~~sh
 {
