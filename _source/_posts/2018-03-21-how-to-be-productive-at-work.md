@@ -83,6 +83,14 @@ When you're traveling, it's difficult to have a regular routine. Especially if y
 
 Traveling is hard on the body and mind. For this reason, I try to minimize the items in my six-week plan during the weeks I travel. Even on days when I attend meetups, I adjust my schedule and consider them travel days.
 
+## Go on Walks During Meetings
+
+I feel very fortunate in that I don't have to attend a lot of meetings. Granted, I get a lot of meeting invites, but I decline most of them. There's less than a handful that I need to attend every week. Most of these meetings don't require me to interact with the attendees, so I tend to go on walks during them.
+
+We use [Zoom](http://zoom.us/) at Okta for all of our meetings and its mobile app works quite well. I can dial into the meeting, listen while I walk, and look at the video feed on my phone if there's something that catches my attention. I've found that I actually pay more attention to meetings when I'm walking than when I'm standing at my desk.
+
+Obviously, this doesn't work when you're a presenter in the meeting. However, for most other meetings it does, and you're killing two birds with one stone (daily exercise + work)!
+
 ## Take Care of Yourself
 
 You've heard it all before. Eat well, drink less, exercise more, and get a good night's rest. These are all excellent recommendations but can be challenging to do, especially on the road. The easiest way to take care of yourself is not to travel.
