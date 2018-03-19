@@ -3,35 +3,35 @@ layout: blog_post
 title: "How to Achieve Massive Productivity at Work"
 author: mraible
 description: "You learn a lot about productivity when you're a remote developer. This post explains how I achieve massive productivity and wow my co-workers with how much I get done."
-tags: [productivity, efficiency, remote, planning, devrel, developer advocate, life]
-tweets: 
-  - "Tips for Productivity and Happiness at Work →"
-  - "Developers love to be productive and get stuff done. This post shows how @mraible achieves massive productivity in his role as Developer Advocate at Okta."
+tags: [productivity, efficiency, remote, planning, devrel, developer advocate, life, work-life balance]
+tweets:
+ - "Tips for productivity and happiness at work →"
+ - "Developers love to be productive and get stuff done. This post shows how @mraible achieves massive productivity in his role as a Developer Advocate at Okta."
 ---
 
-“Productivity is all about efficiency and planning.” -- Mahdi Yusuf
+“Productivity is all about efficiency and planning.” -- Mahdi Yusuf, [Iterate](https://www.iterateconf.io/) 2018
 
-Like most developers, I love getting shit done. My best days are when I feel like I've accomplished a lot. When the Stormpath team joined Okta in February 2018, it was a tough transition at first. I'd started to get into the flow of writing blog posts about Stormpath's SDKs and had a bunch queued up. Okta didn't have SDKs like Stormpath, that's why they hired us!
+Like most developers, I love getting shit done. My best days are when I feel like I've been massively productive. When the Stormpath team joined Okta in February 2018, it was a tough transition at first. I'd started to get into the flow of writing blog posts about Stormpath's SDKs and had a bunch queued up. But Okta didn't have SDKs like Stormpath, that's why they hired us!
 
-Fast forward a year, and I feel like I'm in the groove again. However, it didn't take me long to find my groove at Okta. In fact, I was able to figure it out within the first couple months. My journey started in March of last year when I googled for "Spring Boot Okta" and discovered there wasn't a lot of information on integrating the two. I wrote two blog posts that didn't require SDKs because Spring Security already had great support for [SAML](/blog/2017/03/16/spring-boot-saml) and [OAuth 2.0](/blog/2017/03/21/spring-boot-oauth).
+Fast forward a year and I feel like I'm in the groove again. And happily, it didn't take me a year to find my groove at Okta. In fact, I was able to figure it out within the first couple months. My journey started in March of last year when I googled for "Spring Boot Okta" and discovered there wasn't a lot of information on integrating the two. I wrote two blog posts that didn't require SDKs because Spring Security already had great support for [SAML](/blog/2017/03/16/spring-boot-saml) and [OAuth 2.0](/blog/2017/03/21/spring-boot-oauth).
 
 At the end of March, I journeyed to Devoxx France, and [had a great time speaking with Josh Long](https://raibledesigns.com/rd/entry/angular_and_cloud_native_pwas). The reason I tell this story is because I had an epiphany on the flight home.
 
 I had so many things I wanted to do and blog about that I wrote down a **Six-Week Plan**. I've done a six-week plan ever since, and it's significantly contributed to my productivity at Okta. I've learned quite a few things along the way, so I thought I'd share them with you today.
 
-## Create a Six-Week Plan
+## Create a Six-Week Productivity Plan
 
 I create a six-week plan in the Notes app on my Mac because it's easy to edit on my laptop or my phone. Google Docs will likely work just as well. I write down Monday's date, followed by a list of 2-5 items I'd like to accomplish that week. Here are the first two weeks of my initial plan:
 
 ```
-April 10: 
+April 10:
     Zuul support for Okta or change presentation to showcase SAML, OAuth, and JWT
     Angular OpenID Connect blog post
     PWA with Spring Boot blog post
     Schedule vJUG (June?) for Josh and my talk on Cloud Native PWAs
-April 17: 
+April 17:
     Polish presentation for Prospecting the Security Landscape
-    Deliver presentation in St. Louis 
+    Deliver presentation in St. Louis
     Edit/publish blog posts
 ```
 
@@ -43,7 +43,7 @@ I use [Remember The Milk](https://www.rememberthemilk.com) to plan my week. You 
 
 I often don't complete tasks I've scheduled. I re-arrange my week's schedule often.
 
-## Go Dark
+## Go Dark for Productivity
 
 I'm a remote worker, which means almost all communication happens via email or Slack. I'm one of those lucky people that don't get a lot of work-related emails, but I do get a lot of notifications from the open source projects I contribute to.
 
@@ -53,13 +53,13 @@ My second biggest secret, aside from the six week plan, is I *go dark* to get st
 
 ## Do the Hard Stuff Early in the Week
 
-I try to go dark early in the week. The hardest thing I do in a typical week is to write a blog post. Often, I don't know if the blog post is even possible (e.g., show how to log in to Okta with React Native) to write. I spend a day or two writing an example app, then 4-8 hours writing a blog post about how I did it. 
+I try to go dark early in the week. The hardest thing I do in a typical week is to write a blog post. Often, I don't know if the blog post is even possible (e.g., show how to log in to Okta with React Native) to write. I spend a day or two writing an example app, then 4-8 hours writing a blog post about how I did it.
 
 If I need to write a new presentation for a speaking engagement, I create a story/outline with a beginning, middle, and end. Then I create the slides to follow the outline, accompanied by images or pictures that help tell the story. I've been tempted to ditch the slides, but I like to think one of my trademarks is presentations that look good.
 
 ### Write in Markdown, Edit in Google Docs
 
-I've written most of my blog posts in Markdown over the last year. For books I've authored, I prefer Asciidoctor. I used to author blog posts in Google Docs, go through the editing process, then create the files for production from that. I've learned it's better (and easier!) to start with the production files, then copy the raw text into Google Docs. This makes it much easier to copy the text back into the production files, review the changes, and commit/push in minutes. 
+I've written most of my blog posts in Markdown over the last year. For books I've authored, I prefer Asciidoctor. I used to author blog posts in Google Docs, go through the editing process, then create the files for production from that. I've learned it's better (and easier!) to start with the production files, then copy the raw text into Google Docs. This makes it much easier to copy the text back into the production files, review the changes, and commit/push in minutes.
 
 If your editor can't understand Markdown/AsciiDoc, it's time to find a new editor!
 
@@ -67,7 +67,7 @@ I also highly recommend [Grammarly](https://www.grammarly.com/) to reduce the bu
 
 ## Allow for Zero Productivity Days
 
-I was initially frustrated early on when priorities would shift, and I wasn't able to accomplish the items on my six-week plan. I've since learned to be flexible and even embrace zero productivity. On these days, I'll d the opposite of dark. I'll be fully online, responding to questions on our [Developer Forums](https://devforum.okta.com/), participating in Slack discussions, and trying to get to Inbox Zero.
+I was frustrated early on when priorities would shift, and I wasn't able to accomplish the items on my six-week plan. I've since learned to be flexible and even embrace zero productivity. On these days, I'll do the opposite of going dark. I'll be fully online, responding to questions on our [Developer Forums](https://devforum.okta.com/), participating in Slack discussions, and trying to reach the elusive Inbox Zero.
 
 These days are non-productive in my mind, but they're *very* helpful to other developers, and I believe they greatly help my team succeed.
 
@@ -95,18 +95,18 @@ Obviously, this doesn't work when you're a presenter in the meeting. However, fo
 
 You've heard it all before. Eat well, drink less, exercise more, and get a good night's rest. These are all excellent recommendations but can be challenging to do, especially on the road. The easiest way to take care of yourself is not to travel.
 
-An excellent way to get started taking care of yourself is to monitor your health, so you can see where to improve. That's I built [21-Points Health](https://www.21-points.com) as part of the [JHipster Mini-Book](https://jhipster-book.com). I still use 21-Points Health, but I've also started to use [Gyroscope](https://gyrosco.pe) to automate my health monitoring. Gyroscope integrates with [RescueTime](https://www.rescuetime.com) to track your productivity on your computer too. 
+An excellent way to get started taking care of yourself is to monitor your health, so you can see where to improve. That's why I built [21-Points Health](https://www.21-points.com) as part of the [JHipster Mini-Book](https://jhipster-book.com). I still use 21-Points Health, but I've also started to use [Gyroscope](https://gyrosco.pe) to automate my health monitoring. Gyroscope integrates with [RescueTime](https://www.rescuetime.com) to track your productivity on your computer too.
 
-I've also started reading Joe Kutner's [Healthy Programmer](http://healthyprog.com/) book. It's chalk full of useful tips like the following:
+I've also started reading Joe Kutner's [Healthy Programmer](http://healthyprog.com/) book. It's chock full of useful tips like the following:
 
-* Take a break every hour, even if it's just for five minutes.
-* 20-20-20: to prevent eye fatigue, every 20 minutes stare at something 20 feet aware for 20 seconds.
-* Exercise in short bursts, with more intensity and purpose. 20-minute brisk walks are highly recommended. 
-* Eat five portions of fruit and vegetables per day.
+* Take a break every hour, even if it's just for five minutes
+* 20-20-20: to prevent eye fatigue, every 20 minutes stare at something 20 feet away for 20 seconds
+* Exercise in short bursts, with more intensity and purpose. 20-minute brisk walks are highly recommended
+* Eat five portions of fruit and vegetables per day
 
 ## Go on Vacation. Often.
 
-I work hard, and I play hard. My family loves to do ski weekends, road trips, and whitewater raft trips. I'm lucky to work at a company like Okta that has an unlimited vacation policy. I've heard that most unlimited vacation policies don't work for people because they tend to work more, and take fewer vacations. 
+I work hard, and I play hard. My family loves to do ski weekends, road trips, and whitewater raft trips. I'm lucky to work at a company like Okta that has an unlimited vacation policy. I've heard that most unlimited vacation policies don't work for people because they tend to work more, and take fewer vacations.
 
 I take full advantage of our unlimited vacation policy and make sure to take a week of vacation during every other six-week plan. Last summer I was on vacation three out of six weeks at one point! I believe many Europeans do it right when they take the entire month of August off.
 
@@ -116,8 +116,9 @@ With the remote lifestyle, it's easy to take your family on vacation and work wh
 
 ## How has this helped me?
 
-I believe these tips can help any developer achieve massive productivity. However, they're likely to benefit Developer Advocates more, since that's what I do on a daily basis. If your company believes advocates should be on the road all the time, maybe you should revisit that policy and add more content to your blog instead. 
-Yes, some folks can travel all the time *and* blog, but that's a tough lifestyle to live.
+I believe these tips can help any developer achieve massive productivity. However, they're likely to benefit Developer Advocates more, since that's what I do on a daily basis. If your company believes advocates should be on the road all the time, maybe you should revisit that policy and add more content to your blog instead.
+
+Yes, some folks can travel all the time *and* blog, but that's a tough lifestyle to maintain long-term.
 
 I know these tips work for me because I recently had my annual review with my boss. His only advice was to "slow down, and stop working so much, especially when traveling." Since I'm not traveling as much this year, that's easy to do!
 
