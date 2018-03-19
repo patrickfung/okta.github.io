@@ -61,7 +61,9 @@ If I need to write a new presentation for a speaking engagement, I create a stor
 
 I've written most of my blog posts in Markdown over the last year. For books I've authored, I prefer Asciidoctor. I used to author blog posts in Google Docs, go through the editing process, then create the files for production from that. I've learned it's better (and easier!) to start with the production files, then copy the raw text into Google Docs. This makes it much easier to copy the text back into the production files, review the changes, and commit/push in minutes.
 
-If your editor can't understand Markdown/AsciiDoc, it's time to find a new editor!
+If your editor can't understand Markdown/AsciiDoc, it's time to find a new editor! 
+
+The reason I recommend editing in Google Docs is because it's easy to add/accept suggestions and comments. It's very efficient for editors and writers alike.
 
 I also highly recommend [Grammarly](https://www.grammarly.com/) to reduce the burden on your editor.
 
