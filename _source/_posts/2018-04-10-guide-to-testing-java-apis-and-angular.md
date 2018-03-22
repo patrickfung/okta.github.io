@@ -1,6 +1,6 @@
 ---
 layout: blog_post
-title: "git "
+title: "The Hitchhiker’s Guide to Testing Java APIs and Angular Components"
 author: [mraible,bdemers]
 description: "Building an app with Spring Boot and Angular is easy, but maintaining without tests can be difficult. This post shows you how to test your API and UI components."
 tags: [testing, junit, spring-boot, angular, jasmine, protractor]
