@@ -57,10 +57,10 @@ You can think of this like hotel key cards, but for apps. If you have a hotel ke
 
 To break it down simply, OAuth is where:
 
-App requests authorization from User
-User authorizes App and delivers proof
-App presents proof of authorization to server to get a Token
-Token is restricted to only access what the User authorized for the specific App
+1. App requests authorization from User
+2. User authorizes App and delivers proof
+3. App presents proof of authorization to server to get a Token
+4. Token is restricted to only access what the User authorized for the specific App
 
 ## OAuth Central Components
 
