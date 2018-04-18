@@ -166,7 +166,7 @@ jmelberg:
   avatar: avatar-jmelberg.jpg
   email: jordan.melberg@okta.com
   github: https://github.com/jmelberg
-  
+
 bparise:
   full_name: Brandon Parise
   display_name: Brandon Parise
@@ -174,3 +174,20 @@ bparise:
   email: brandon@modernup.io
   web: https://modernup.io/
   github: https://github.com/bparise
+
+aaronpk:
+  full_name: Aaron Parecki
+  display_name: Aaron Parecki
+  avatar: avatar-aaronpk.jpg
+  email: aaron.parecki@okta.com
+  web: https://aaronparecki.com/
+  twitter: https://twitter.com/aaronpk
+  github: https://github.com/aaronpk
+
+adahl:
+  full_name: Alex Dahl
+  display_name: Alex Dahl
+  avatar: avatar-adahl.jpg
+  email: alex.dahl@okta.com
+  web: https://alexdahl.com
+  github: https://github.com/alexdahl

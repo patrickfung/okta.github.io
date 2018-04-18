@@ -30,7 +30,7 @@ This page contains detailed information about the OAuth 2.0 / OpenID Connect end
 
 ### Composing Your Base URL
 
-All of the endpoints on this page start with an authorization server. You have two types of authorization servers to choose from, depending on your use case:
+All of the endpoints on this page start with an authorization server, however the URL for that server will vary depending on the endpoint and the type of authorization server. You have two types of authorization servers to choose from, depending on your use case:
 
 #### 1. Single sign-on to Okta
 
@@ -73,7 +73,7 @@ of the callback response.
 | login_hint            | A username to prepopulate if prompting for authentication.                                                                                                                                                                                                                                                                                                                                              | Query      | String   | FALSE    |
 | max_age               | Allowable elapsed time, in seconds, since the last time the end user was actively authenticated by Okta.                                                                                                                                                                                                                                                                                                | Query      | String   | FALSE    |
 | nonce                 | A value that will be returned in the ID token. It is used to mitigate replay attacks.                                                                                                                                                                                                                                                                                                                   | Query      | String   | TRUE     |
-| prompt                | Either `none` or `login`. See [Parameter Details](#parameter-details) for more.                                                                                              | Query      | String   | FALSE    |
+| prompt                | Valid values: `none`, `consent`, `login`, or `consent` and `login` in either order. See [Parameter Details](#parameter-details) for more information.                                                                                              | Query      | String   | FALSE    |
 | redirect_uri          | Callback location where the authorization code or tokens should be sent. It must match the value preregistered in Okta during client registration.                                                                                                                                                                                                                                                                | Query      | String   | TRUE     |
 | response_type         | Any combination of `code`, `token`, and `id_token`. The combination determines the [flow](/authentication-guide/implementing-authentication/).                                                                                                                   | Query      | String   | TRUE     |
 | response_mode         | How the authorization response should be returned. [Valid values](#parameter-details): `fragment`, `form_post`, `query` or `okta_post_message`. If `id_token` or `token` is specified as the response type, then `query` isn't allowed as a response mode. Defaults to `fragment` in implicit and hybrid flows. If using the authorization code flow, this cannot be set to `okta_post_message` and if not specified the default value is `query`.  | Query      | String   | FALSE    |
@@ -87,13 +87,18 @@ of the callback response.
  * `idp`, `sessionToken` and `idp_scope` are Okta extensions to [the OpenID specification](http://openid.net/specs/openid-connect-core-1_0.html#Authentication).
     All other parameters comply with the OpenID Connect specification and their behavior is consistent with the specification.
 
-`prompt`:
+* `prompt`:
 
-There are three possible values for this parameter:
+    If no `prompt` parameter is specified, the standard behavior occurs:
+    * If an Okta session already exists, the user is silently authenticated. Otherwise, the user is prompted to authenticate.
+     * If scopes are requested that require consent and consent is not yet given by the authenticated user, the user is prompted to give consent.
 
-1. Null (no `prompt` parameter): Normal behavior. If an Okta session already exists, the user is silently authenticated. Otherwise, the user is prompted to authenticate.
-2. `none`: Do not prompt for authentication. If an Okta session already exists, the user is silently authenticated. Otherwise, an error is returned.
-3. `login`: Always prompt the user for authentication, regardless of whether they have an Okta session.
+    There are four possible values for this parameter:
+
+    * `none`: Do not prompt for authentication or consent. If an Okta session already exists, the user is silently authenticated. Otherwise, an error is returned.
+    * `login`: Always prompt the user for authentication, regardless of whether they have an Okta session.
+    * `consent`: {% api_lifecycle ea %} Depending on the [values set for `consent_method` in the app and and `consent` on the scope](/docs/api/resources/apps.html#add-oauth-20-client-application), display the Okta consent dialog, even if the user has already given consent. User consent is available for Custom Authorization Servers (requires the API Access Management feature and the User Consent feature enabled).
+    * `login consent` or `consent login` (order doesn't matter): The user is always prompted for authentication, and the user consent dialog is displayed depending on the [values set for `consent_method` in the app and and `consent` on the scope](/docs/api/resources/apps.html#add-oauth-20-client-application), even if the user has already given consent.
 
 `request`:
 
@@ -194,7 +199,7 @@ These APIs are compliant with the OpenID Connect and OAuth 2.0 spec with some Ok
 This request initiates the authorization code flow, as signaled by `response_type=code`. The request returns an authorization code that you can use as the `code` parameter in a token request.
 
 ~~~
-https://{yourOktaOrg}/oauth2/default/v1/authorize?client_id=0oabucvy
+https://{yourOktaDomain}.com/oauth2/default/v1/authorize?client_id=0oabucvy
 c38HLL1ef0h7&response_type=code&scope=openid&redirect_uri=http%3A%2F%2Flocal
 host%3A8080&state=state-296bc9a0-a2a2-4a57-be1a-d0e2fd9bb601&nonce=g5ly497e8ps'
 ~~~
@@ -202,14 +207,14 @@ host%3A8080&state=state-296bc9a0-a2a2-4a57-be1a-d0e2fd9bb601&nonce=g5ly497e8ps'
 This request does the same thing, but uses the `request` parameter to deliver a signed (HS256) JWT that contains all the query parameters:
 
 ~~~
-https://{yourOktaOrg}/oauth2/default/v1/authorize?
+https://{yourOktaDomain}.com/oauth2/default/v1/authorize?
   request=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPa3RhIiwiaWF0IjoxNTEyNTE2MjIxLCJleHAiOjE1NDQwNTIyMjEsImF1ZCI6Ind3dy5leGFtcGxlLmNvbSIsInN1YiI6InNqYWNrc29uQGV4YW1wbGUuY29tIiwiRW1haWwiOiJzamFja3NvbkBleGFtcGxlLmNvbSIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwicmVzcG9uc2VfbW9kZSI6ImZvcm1fcG9zdCIsInJlZGlyZWN0X3VyaSI6Im15UmVkaXJlY3RVUkkuY29tIiwic3RhdGUiOiJteVN0YXRlIiwibm9uY2UiOiJteU5vbmNlIiwic2NvcGUiOiJvcGVuaWQgb2ZmbGluZV9hY2Nlc3MifQ.TjPy2_nUerULClavBNHcpnO_Pd1DxNEjQCeSW45ALJg"
 ~~~
 
 This request initiates the implicit flow, which gets an ID token and access token from the authorization server without the code exchange step. We use the same request as the first example, but with `response_type=id_token token`:
 
 ~~~
-https://{yourOktaOrg}/oauth2/default/v1/authorize?client_id=0oabv6kx4qq6
+https://{yourOktaDomain}.com/oauth2/default/v1/authorize?client_id=0oabv6kx4qq6
 h1U5l0h7&response_type=id_token token&scope=openid&redirect_uri=http%3A%2F%2Flocalhost%3
 A8080&state=state-296bc9a0-a2a2-4a57-be1a-d0e2fd9bb601&nonce=foo'
 ~~~
@@ -826,7 +831,7 @@ curl -X GET \
         "client_secret_post",
         "client_secret_jwt",
         "none"
-    ]
+    ],
     "end_session_endpoint": "https://{yourOktaDomain}.com/oauth2/${authServerId}/v1/logout",
     "request_parameter_supported": true,
     "request_object_signing_alg_values_supported": [
@@ -853,9 +858,11 @@ HTTP 404 Not Found
 ### /.well-known/openid-configuration
 {:.api .api-operation}
 
-{% api_operation get ${baseUrl}/.well-known/openid-configuration %}
+{% api_operation get https://{yourOktaDomain}.com/.well-known/openid-configuration %}
 
-> This endpoint's base URL will vary depending on whether you are using a custom authorization server or not. For more information, see [Composing Your Base URL](#composing-your-base-url).
+{% api_operation get https://{yourOktaDomain}.com/oauth2/${authServerId}/.well-known/openid-configuration %}
+
+> This endpoint's base URL will vary depending on whether you are using a custom authorization server or not. The custom authorization server URL specifies an `authServerId`. For example, the custom Authorization Server automatically created for you by Okta has an `authServerId` value of `default`.
 
 Returns OpenID Connect metadata about your authorization server. This information can be used by clients to programmatically configure their interactions with Okta. Custom scopes and custom claims aren't returned.
 
@@ -866,7 +873,7 @@ This API doesn't require any authentication.
 
 ~~~sh
 curl -X GET \
-  "https:/{yourOktaDomain}.com/oauth2/${authServerId}/.well-known/openid-configuration?client_id=0oabzljih3rnr6aGt0h7" \
+  "https://{yourOktaDomain}.com/oauth2/${authServerId}/.well-known/openid-configuration?client_id=0oabzljih3rnr6aGt0h7" \
 ~~~
 
 #### Response Properties
@@ -874,7 +881,7 @@ curl -X GET \
 
 | Property  | Description                                                                                                   | Type    |
 |:-----------|:-------------------------------------------------------------------------------------------------------------|:--------|
-| authorization endpoint | URL of the authorization server's [authorization endpoint](#authorize). | String |
+| authorization_endpoint | URL of the authorization server's [authorization endpoint](#authorize). | String |
 | claims_supported | A list of the claims supported by this authorization server. | Array |
 | code_challenge_methods_supported| JSON array containing a list of [PKCE code challenge](/authentication-guide/implementing-authentication/auth-code-pkce) methods supported by this authorization server. | Array |
 | end_session_endpoint | URL of the authorization server's [logout endpoint](#logout). | String |
