@@ -1,6 +1,6 @@
 ---
 layout: blog_post
-title: "The Hitchhiker’s Guide to Testing Java APIs and Angular Components"
+title: "The Hitchhiker's Guide to Testing Java APIs and Angular Components"
 author: [mraible,bdemers]
 description: "Building an app with Spring Boot and Angular is easy, but maintaining without tests can be difficult. This post shows you how to test your API and UI components."
 tags: [testing, junit, spring-boot, angular, jasmine, protractor]
@@ -36,9 +36,9 @@ The instructions below assume you're operating from the `okta-ionic-crypto-java-
 
 ### Setup Okta
 
-Log in to your Okta Developer account (or [sign up](https://developer.okta.com/signup/) if you don’t have an account).
+Log in to your Okta Developer account (or [sign up](https://developer.okta.com/signup/) if you don't have an account).
 
-The first thing you’ll need to do is add a `holdings` attribute to your organization’s user profiles. Log in to the Okta Developer Console, then navigate to **Users** > **Profile Editor**. Click on **Profile** for the first profile in the table. You can identify it by its Okta logo. Click **Add Attribute** and use the following values:
+The first thing you'll need to do is add a `holdings` attribute to your organization's user profiles. Log in to the Okta Developer Console, then navigate to **Users** > **Profile Editor**. Click on **Profile** for the first profile in the table. You can identify it by its Okta logo. Click **Add Attribute** and use the following values:
 
 * Display name: `Holdings`
 * Variable name: `holdings`
@@ -46,9 +46,9 @@ The first thing you’ll need to do is add a `holdings` attribute to your organi
 
 You will need to create an API Token and OIDC App to get values to perform authentication and store data in Okta.
 
-Navigate to **Applications** > **Add Application**. Click **Single-Page App**, click **Next**, and give the app a name you’ll remember. Click **Done**.
+Navigate to **Applications** > **Add Application**. Click **Single-Page App**, click **Next**, and give the app a name you'll remember. Click **Done**.
 
-For the Okta Java SDK to talk to Okta’s API, you’ll need to create an API token. The abbreviated steps are as follows:
+For the Okta Java SDK to talk to Okta's API, you'll need to create an API token. The abbreviated steps are as follows:
 
 1. Log in to your Developer Console
 2. Navigate to **API** > **Tokens** and click **Create Token**
