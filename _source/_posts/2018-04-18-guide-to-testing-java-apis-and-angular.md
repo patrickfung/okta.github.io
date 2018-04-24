@@ -118,19 +118,19 @@ Then, I copied the configuration into the `crypto-pwa` project. I've abbreviated
 
     ```json
     "typescript": "2.8.1",
-    "@types/jest": "^22.2.3",
-    "@types/node": "^9.6.5",
-    "html-loader": "^0.5.1",
-    "ionic-mocks-jest": "^1.0.3",
-    "istanbul-instrumenter-loader": "^3.0.0",
-    "jasmine": "^3.1.0",
-    "jasmine-spec-reporter": "^4.1.0",
-    "jest": "^22.4.3",
-    "jest-preset-angular": "^5.2.1",
-    "null-loader": "^0.1.1",
-    "protractor": "^5.1.1",
-    "ts-loader": "^4.2.0",
-    "ts-node": "^6.0.0"
+    "@types/jest": "22.2.3",
+    "@types/node": "9.6.5",
+    "html-loader": "0.5.1",
+    "ionic-mocks-jest": "1.0.3",
+    "istanbul-instrumenter-loader": "3.0.0",
+    "jasmine": "3.1.0",
+    "jasmine-spec-reporter": "4.1.0",
+    "jest": "22.4.3",
+    "jest-preset-angular": "5.2.1",
+    "null-loader": "0.1.1",
+    "protractor": "5.1.1",
+    "ts-loader": "4.2.0",
+    "ts-node": "6.0.0"
     ```
 
 3. Add configuration for Jest, on same level as `devDependencies` and `scripts` in `package.json`:
