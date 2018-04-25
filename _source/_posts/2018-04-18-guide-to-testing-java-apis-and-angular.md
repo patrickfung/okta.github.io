@@ -133,7 +133,7 @@ Then, I copied the configuration into the `crypto-pwa` project. I've abbreviated
     "ts-node": "6.0.0"
     ```
 
-3. Add configuration for Jest, on same level as `devDependencies` and `scripts` in `package.json`:
+3. Add configuration for Jest, on the same level as `devDependencies` and `scripts` in `package.json`:
 
     ```json
     "jest": {
@@ -240,13 +240,15 @@ Then, I copied the configuration into the `crypto-pwa` project. I've abbreviated
     }
     ```
 
-**NOTE:** After making all these changes, I updated all dependencies in `crypto-pwa/package.json` by installing [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) and running `ncu -u`.
+    **NOTE:** After making all these changes, I updated all dependencies in `crypto-pwa/package.json` by installing [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) and running `ncu -u`.
+
+7. Run `npm i` to install the new dependencies you added.
 
 ### Unit Testing Ionic Components with Jest and Jasmine
 
 According to the [Jest](https://facebook.github.io/jest/) homepage, it's used by Facebook to test all JavaScript code including React applications. Jest strives for zero-configuration, but you can tell from the files above that it still requires some configuration. It does have built-in code coverage reports, which is kinda cool.
 
-MR: the following code blog might work better at the end.
+MR: the following blockquote might work better at the end.
 
 > If you're new to Jest and want to learn the basics, I invite you to read its [Getting Started](https://facebook.github.io/jest/docs/en/getting-started.html) guide.
 
@@ -280,13 +282,11 @@ Create `crypto-pwa/src/app/app.component.spec.ts` and populate it the following 
 ```ts
 import { async, TestBed } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
 import { PlatformMock, SplashScreenMock, StatusBarMock } from 'ionic-mocks-jest';
-
 import { MyApp } from './app.component';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 describe('MyApp Component', () => {
   let fixture;
@@ -471,15 +471,23 @@ Run `npm test` and everything should pass!
 
  PASS  src/app/app.component.spec.ts
   MyApp Component
-    ✓ should be created (633ms)
-    ✓ should show login page (544ms)
+    ✓ should be created (517ms)
+    ✓ should show login page (330ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       2 passed, 2 total
 Snapshots:   0 total
-Time:        4.232s
+Time:        4.363s, estimated 5s
 Ran all test suites.
 ```
+
+**NOTE:** You might experience the following test failure:
+
+```
+Cannot find module 'rxjs-compat/Observable' from 'Observable.js'
+```
+
+If this happens, it's because running `ncu -u` updated [RxJS](http://reactivex.io/rxjs/) from 5.5.8 to 6.x. To fix it, you can modify your `package.json` to revert to 5.5.10 (the latest version) or run `npm i -rxjs-compat`. See the [version 6 migration guide](https://github.com/ReactiveX/rxjs/blob/master/MIGRATION.md) for more information.
 
 ### Driving and Testing Your UI with Protractor
 
@@ -564,6 +572,32 @@ To execute Protractor tests, run `ionic serve` in one terminal and `npm run e2e`
 <div style="width: 600px; margin: 0 auto">
 <object width="600" height="338"><param name="movie" value="https://www.youtube.com/v/MO_ZWxI7Yi4&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><embed src="https://www.youtube.com/v/MO_ZWxI7Yi4&hl=en&fs=1" type="application/x-shockwave-flash" allowfullscreen="true" width="600" height="338"></embed></object>
 </div>
+
+You could also configure Protractor to launch its own webserver. To do this, add a devDependency on [serve](https://www.npmjs.com/package/serve):
+
+```
+npm i -D serve
+```
+
+Then modify `crypto-pwa/test/protractor.conf.js` to serve up the `www` directory on port 8100.
+
+```
+onPrepare() {
+  require('ts-node').register({
+    project: 'e2e/tsconfig.e2e.json'
+  });
+  require('serve')('www', {port: 8100});
+  jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+}
+```
+
+The only drawback to this technique is you'll have to build your project (with `npm run build` so the `www` is populated) before running it. It's a good idea to do a prod build (`npm run build --prod`) before running e2e tests anyway, so this drawback is actually a good practice.
+
+Even better, you can automate it with continuous integration! We'll get to that in a minute. First, create a `e2e/spec/holdings.e2e-spec.ts` that logs into Okta and verifies you can add/remove holdings.
+
+```
+
+```
 
 ## Continuous Integration and Delivery
 
