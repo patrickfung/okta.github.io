@@ -981,7 +981,7 @@ This happens because the `E2E_USERNAME` and `E2E_PASSWORD` environment variables
 
 You can see a successful build in the screenshot below.
 
-
+[{% img blog/cryptocurrency-pwa-java-sdk-testing/travis-success.png alt:"Travis success" width:"800" %}{: .center-image }](https://travis-ci.org/oktadeveloper/okta-ionic-crypto-java-sdk-example/builds/371729753)
 
 ## Code Coverage Tools
 
