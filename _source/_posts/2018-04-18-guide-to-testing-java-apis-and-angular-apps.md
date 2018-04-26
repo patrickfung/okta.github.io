@@ -1,7 +1,8 @@
 ---
+<!-- URL is currently: /blog/2018/04/18/guide-to-testing-java-apis-and-angular-apps -->
 layout: blog_post
 title: "The Hitchhiker's Guide to Testing Java APIs and Angular Components"
-author: [mraible,bdemers]
+author: mraible
 description: "Building an app with Spring Boot and Angular is easy, but maintaining without tests can be difficult. This post shows you how to test your API and UI components."
 tags: [testing, junit, spring-boot, angular, jasmine, protractor]
 tweets:
@@ -526,7 +527,7 @@ Then, I copied the configuration into the `crypto-pwa` project. I've abbreviated
 
 7. Run `npm i` to install the new dependencies you added.
 
-### Unit Testing Ionic Components with Jest and Jasmine
+### Unit Testing Ionic Components with Jest
 
 According to the [Jest](https://facebook.github.io/jest/) homepage, it's used by Facebook to test all JavaScript code including React applications. Jest strives for zero-configuration, but you can tell from the files above that it still requires some configuration. It does have built-in code coverage reports, which is kinda cool.
 
@@ -1037,7 +1038,7 @@ npm i -D serve
 
 Then modify `crypto-pwa/test/protractor.conf.js` to serve up the `www` directory on port 8100. It's also a good idea to shut down any processes you start, hence the `server.stop()` in `onComplete()`.
 
-```
+```js
 const serve = require('serve');
 let server;
 
@@ -1060,7 +1061,7 @@ The only drawback to this technique is you'll have to build your project (with `
 
 Even better, you can automate it with continuous integration! We'll get to that in a minute. First, create a `crypto-pwa/e2e/pages/login.po.ts` that defines the elements and methods you'll need to authenticate.
 
-```
+```ts
 import { browser, by, element } from 'protractor';
 import { Page } from './app.po';
 
@@ -1265,23 +1266,22 @@ You can see a successful build in the screenshot below.
 
 [{% img blog/cryptocurrency-pwa-java-sdk-testing/travis-success.png alt:"Travis success" width:"800" %}{: .center-image }](https://travis-ci.org/oktadeveloper/okta-ionic-crypto-java-sdk-example/builds/371729753)
 
+We encourage you to read Travis CI's [Best Practices in Securing Your Data](https://docs.travis-ci.com/user/best-practices-security/) to learn more about how to avoid leaking secrets.
+
 ## Code Coverage Tools
 
-TODO: no idea how this works JS coverage and Jacoco (it looks like it _should_ work) 
+Reporting how much of your code is tested is an excellent way to see how much technical debt you have and the parts of your application that need more tests.
 
-I've been using [CodeCov](https://codecov.io/), mostly because it is so easy to use, in your `travis.yml` you just add a pointer to your coverage file: 
+For Java code coverage, I've been using [CodeCov](https://codecov.io/), mostly because it is so easy to use, in your `travis.yml` you just add a pointer to your coverage file:
 
 ```yml
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -f okta-ionic-crypto-java-sdk/holdings-api/target/site/jacoco-merge/jacoco.xml`
+  - bash <(curl -s https://codecov.io/bash) -f okta-ionic-crypto-java-sdk-example/holdings-api/target/site/jacoco-merge/jacoco.xml`
 ```
 
 TODO: add `unittests` and `integration` flags: https://docs.codecov.io/docs/flags
 
 You can configure CodeCov to report on your GitHub [pull requests](https://github.com/apps/codecov) too!
-
-Why? 
-Tracking over time
 
 ### JaCoCo Java Code Coverage Library
 
@@ -1342,10 +1342,30 @@ For Java code coverage I typically use [Jacoco](https://github.com/jacoco/jacoco
 
 The last bit here with the id of `jacoco-merge-report` merges the UT, and IT reports to create a new report with the total project test coverage.  If you are working with a Maven multi-module build, it is a little easier then this, and you could use the [`report-aggregate`](https://www.eclemma.org/jacoco/trunk/doc/report-aggregate-mojo.html) goal instead.
 
-### Istanbul 
+For the Angular side of things, Jest has built in code coverage. You simply have to run `npm run test:coverage`. You can see from the screenshot below that there's still a couple pages that need more tests.
 
-https://istanbul.js.org/
+{% img blog/cryptocurrency-pwa-java-sdk-testing/jest-coverage.png alt:"Jest coverage" width:"800" %}{: .center-image }
 
-## Learn More
+[Istanbul](https://istanbul.js.org/) is another popular code coverage tool in the JavaScript ecosystem. It's [used by Angular CLI](https://github.com/angular/angular-cli/blob/master/docs/documentation/stories/code-coverage.md). If you're in an Angular CLI-generated project, run `ng test --sr --cc` from the root of your project to generate a report in `coverage/index.html`.
 
-We hope you've enjoyed this hitchhiker's guide to testing Java and TypeScript applications. It's a really good feeling when your codebase has high test coverage and you're able to refactor by tweaking your code and adjusting your tests.
+## Learn More about Testing Java APIs and TypeScript Apps
+
+We hope you've enjoyed this hitchhiker's guide to testing Java APIs and Ionic/Angular applications. It's a really good feeling when your codebase has high test coverage and you're able to refactor by tweaking your code and adjusting your tests.
+
+If you'd like to learn more about testing Java and Spring Boot APIs, please see:
+
+#todo: @bdemers
+
+For Angular and Ionic testing here's a few resources we found useful:
+
+* [Angular 5: Testing with Mocks & Spies](https://codecraft.tv/courses/angular/unit-testing/mocks-and-spies/)
+* [Angular's Official Testing Guide](https://angular.io/guide/testing)
+* [Ionic Unit Testing Example](https://github.com/ionic-team/ionic-unit-testing-example)
+
+If you're into Ionic and JHipster, we recently added unit and e2e testing support to the [Ionic Module for JHipster](https://github.com/oktadeveloper/generator-jhipster-ionic) and its associated [Ionic JHipster Starter](https://github.com/oktadeveloper/ionic-jhipster-starter). Both projects have some pretty sophisticated Travis builds that ensure everything works with JWT/OIDC authentication and a [JHipster](https://www.jhipster.tech) backend.
+
+Speaking of complicated builds, JHipster's [main build](https://github.com/jhipster/generator-jhipster/blob/master/.travis.yml) and [additional build](https://github.com/hipster-labs/jhipster-travis-build/blob/master/.travis.yml) test over 54 combinations!
+
+If you're looking for a Spring Boot + Angular (or React) example app with lots of tests, look no further than JHipster. It even has a [continuous integration sub-generator](https://www.jhipster.tech/setting-up-ci/) that supports Jenkins, Travis, CircleCI, and GitLab CI/CD.
+
+If you'd like to learn more about topics like Spring Boot, Angular, React, and JHipster, give us a follow [@oktadev](https://twitter.com/oktadev). If you have any questions about this post, please leave a comment below.
