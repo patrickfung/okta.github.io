@@ -252,7 +252,7 @@ MR: the following blockquote might work better at the end.
 
 > If you're new to Jest and want to learn the basics, I invite you to read its [Getting Started](https://facebook.github.io/jest/docs/en/getting-started.html) guide.
 
-Jest is a test runner, similar to [Karma](https://karma-runner.github.io). Both runners support using [Jasmine](https://jasmine.github.io) in your tests. For Java developers, Jasmine is the JUnit of the JavaScript ecosystem. A simple Jasmine tests looks as follows:
+Jest is similar to [Karma](https://karma-runner.github.io) and [Jasmine](https://jasmine.github.io). Karma is a test runner and Jasmine is a behavior-driven development framework for testing JavaScript code. For Java developers, Jasmine is like the JUnit of the JavaScript ecosystem. A simple Jasmine tests looks as follows:
 
 ```js
 describe('A suite is just a function', () => {
@@ -266,9 +266,9 @@ describe('A suite is just a function', () => {
 });
 ```
 
-**TIP:** If you want to only run specific tests, you can add an `f` prefix to your `describe` or `it` functions, so they become `fdescribe` or `fit`. If you want to exclude tests, you can add an `x` prefix to these same code blocks (e.g., `xdescribe` and `xit`).
+Jest tests look very similar, but there's some slight differences. If you're interested in learning more, I'd suggest googling "[jest vs jasmine](https://www.google.com/search?q=jest+vs+jasmine)".
 
-After making the changes above, you have several options to run unit tests:
+After adding Jest support to your Ionic project, you have several options to run unit tests:
 
 1. Run `npm test` to execute all the unit tests.
 1. Run `npm run test:watch` to execute tests and watch for changes. If anything changes, tests are automatically executed.
@@ -376,7 +376,7 @@ describe('MyApp Component', () => {
 });
 ```
 
-This test will fail because the `MyApp` component loads `app.html` with Ionic elements in it
+This test will fail because the `MyApp` component loads `app.html` with Ionic elements in it.
 
 ```
  FAIL  src/app/app.component.spec.ts
@@ -434,6 +434,8 @@ beforeEach(
 );
 ```
 
+**TIP:** You could also use `{provide: OAuthService, useValue: oauthService}` to substitute your mock `OAuthService` for the real one. Another option is `useClass`, which allows you to specify a different class.
+
 You only need to define the `hasValidIdToken()` in `oauthService` because that's the only method that's used in `MyApp`:
 
 ```ts
@@ -488,6 +490,178 @@ Cannot find module 'rxjs-compat/Observable' from 'Observable.js'
 ```
 
 If this happens, it's because running `ncu -u` updated [RxJS](http://reactivex.io/rxjs/) from 5.5.8 to 6.x. To fix it, you can modify your `package.json` to revert to 5.5.10 (the latest version) or run `npm i -rxjs-compat`. See the [version 6 migration guide](https://github.com/ReactiveX/rxjs/blob/master/MIGRATION.md) for more information.
+
+The `HomeComponent` loads the list of holdings a user has after they login in its `ionViewDidLoad` method.
+
+```ts
+ionViewDidLoad(): void {
+  if (!this.oauthService.hasValidIdToken()) {
+    this.navCtrl.push('LoginPage');
+  }
+  this.holdingsProvider.loadHoldings();
+}
+```
+
+To test that everything works as expected, create `crypto-pwa/src/pages/home/home.spec.ts` with stubs for its providers.
+
+```ts
+import { IonicModule, NavController } from 'ionic-angular';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HomePage } from './home';
+import { HoldingsProvider } from '../../providers/holdings/holdings';
+import { By } from '@angular/platform-browser';
+
+describe('HomePage', () => {
+  let fixture: ComponentFixture<HomePage>;
+  let component: HomePage;
+  let oauthService = {
+    hasValidIdToken() {
+      return true;
+    },
+    getIdentityClaims() {}
+  };
+  let holdingsProvider = {
+    holdings: [{crypto: 'BTC', currency: 'USD', amount: 5, value: '10000'}],
+    loadHoldings() {
+      return this.holdings;
+    }
+  };
+  let loadHoldings, getIdentityClaims;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [HomePage],
+      imports: [IonicModule.forRoot(HomePage)],
+      providers: [NavController,
+        {provide: OAuthService, useValue: oauthService},
+        {provide: HoldingsProvider, useValue: holdingsProvider}
+      ]
+    });
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HomePage);
+    component = fixture.componentInstance;
+    loadHoldings = jest.spyOn(holdingsProvider, 'loadHoldings');
+    getIdentityClaims = jest.spyOn(oauthService, 'getIdentityClaims');
+  });
+
+  it('should be created', () => {
+    expect(component).toBeDefined()
+  });
+});
+```
+
+This test uses `jest.spyOn` to *spy* on the methods that should be called, and verify they were. If you want to mock functions and return fake data, you can do this with `jest.fn()` and [mock functions](https://facebook.github.io/jest/docs/en/mock-functions.html).
+
+Add tests to ensure `HoldingsProvider.loadHoldings()`` is called and a list of currencies is shown.
+
+```ts
+it('should call loadHoldings', () => {
+  component.ionViewDidLoad();
+  fixture.detectChanges();
+  expect(loadHoldings).toHaveBeenCalled();
+  expect(getIdentityClaims).toHaveBeenCalled();
+});
+
+it('should show list of currencies', () => {
+  component.ionViewDidLoad();
+  fixture.detectChanges();
+  const list: HTMLDivElement = fixture.debugElement.query(By.css('ion-list')).nativeElement;
+  expect(list.innerHTML).toMatch(/ion-item/);
+  const amount = fixture.debugElement.query(By.css('.amount')).nativeElement;
+  expect(amount.innerHTML).toMatch(/<strong>Coins:<\/strong> 5 <strong>Value:<\/strong> 10000/)
+});
+```
+
+Run `npm test` and everything should pass.
+
+```
+Test Suites: 2 passed, 2 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        5.98s
+```
+
+Rather than showing you how to unit test every component, I'll show you how to write one more: a provider test. To test
+providers (often called *services* in regular Angular apps) that use `HttpClient`, you can use `HttpTestingController`. Create `crypto-pwa/src/providers/holdings/holdings.spec.ts` and populate it with the code below.
+
+```ts
+import { getTestBed, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HoldingsProvider } from './holdings';
+import { OAuthService } from 'angular-oauth2-oidc';
+
+describe('HoldingsProvider', () => {
+  let injector: TestBed;
+  let provider: HoldingsProvider;
+  let httpMock: HttpTestingController;
+  let oauthService = {
+    hasValidIdToken() {
+      return true;
+    },
+    authorizationHeader() {
+      return "random-string";
+    }
+  };
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [HoldingsProvider,
+        {provide: OAuthService, useValue: oauthService}
+      ]
+    });
+
+    injector = getTestBed();
+    provider = injector.get(HoldingsProvider);
+    httpMock = injector.get(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify()
+  });
+
+  it('should be created', () => {
+    expect(provider).toBeTruthy();
+  });
+
+  it('should retrieve holdings', () => {
+    const fakeHoldings = [
+      {crypto: 'BTC', currency: 'USD', amount: 5, value: '10000'},
+      {crypto: 'ETH', currency: 'USD', amount: 100, value: '700'}
+    ];
+
+    provider.loadHoldings();
+    const req = httpMock.expectOne(provider.HOLDINGS_API);
+    expect(req.request.method).toBe('GET');
+    req.flush(fakeHoldings);
+
+    expect(provider.holdings.length).toBe(2);
+    expect(provider.holdings[0].crypto).toBe('BTC');
+    expect(provider.holdings).toEqual(fakeHoldings);
+
+    // calls to get prices
+    httpMock.expectOne('https://api.cryptonator.com/api/ticker/BTC-USD');
+    httpMock.expectOne('https://api.cryptonator.com/api/ticker/ETH-USD');
+  });
+});
+```
+
+The real action happens via the following steps:
+
+1. The provider's method is called, `loadHoldings()` in this case
+2. The request is mocked using `expectOne()`
+3. Flush the request passing fake values
+
+After this happens, you can set your expectations accordingly. If there's any extra calls (like `fetchPrices()`) in your provider, you'll need to set expectations for those too. The `afterEach` function is used to verify there are no unanticipated HTTP calls.
+
+**HAT TIP:** I learned how to test providers that use `HttpClient` from [Ciro Nunes' Testing with the Angular HttpClient API](https://medium.com/netscape/testing-with-the-angular-httpclient-api-648203820712).
+
+Run `npm test` to verify all your unit tests pass.
+
+Now that you have unit tests, add some end-to-end tests that ensure the whole app works as expected.
 
 ### Driving and Testing Your UI with Protractor
 
@@ -573,44 +747,174 @@ To execute Protractor tests, run `ionic serve` in one terminal and `npm run e2e`
 <object width="600" height="338"><param name="movie" value="https://www.youtube.com/v/MO_ZWxI7Yi4&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><embed src="https://www.youtube.com/v/MO_ZWxI7Yi4&hl=en&fs=1" type="application/x-shockwave-flash" allowfullscreen="true" width="600" height="338"></embed></object>
 </div>
 
-You could also configure Protractor to launch its own webserver. To do this, add a devDependency on [serve](https://www.npmjs.com/package/serve):
+You can also configure Protractor to launch its own webserver. To do this, add a devDependency on [serve](https://www.npmjs.com/package/serve):
 
 ```
 npm i -D serve
 ```
 
-Then modify `crypto-pwa/test/protractor.conf.js` to serve up the `www` directory on port 8100.
+Then modify `crypto-pwa/test/protractor.conf.js` to serve up the `www` directory on port 8100. It's also a good idea to shut down any processes you start, hence the `server.stop()` in `onComplete()`.
 
 ```
-onPrepare() {
-  require('ts-node').register({
-    project: 'e2e/tsconfig.e2e.json'
-  });
-  require('serve')('www', {port: 8100});
-  jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+const serve = require('serve');
+let server;
+
+exports.config = {
+  ...
+  onPrepare() {
+    require('ts-node').register({
+      project: 'e2e/tsconfig.e2e.json'
+    });
+    server = serve('www', {port: 8100});
+    jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+  },
+  onComplete() {
+    server.stop();
+  }
+};
+```
+
+The only drawback to this technique is you'll have to build your project (with `npm run build` so the `www` is populated) before running it. It's a good idea to do a prod build (`npm run build --prod`) before running e2e tests anyway, so this drawback can also be viewed as a good practice.
+
+Even better, you can automate it with continuous integration! We'll get to that in a minute. First, create a `crypto-pwa/e2e/pages/login.po.ts` that defines the elements and methods you'll need to authenticate.
+
+```
+import { browser, by, element } from 'protractor';
+import { Page } from './app.po';
+
+export class LoginPage extends Page {
+  username = element(by.name('username'));
+  password = element(by.name('password'));
+  oktaLoginButton = element(by.css('input[type=submit]'));
+  loginButton = element(by.css('#login'));
+  logoutButton = element(by.css('#logout'));
+  header = element(by.css('ion-title'));
+
+  getHeader() {
+    return this.header.getText();
+  }
+
+  setUserName(username) {
+    this.username.sendKeys(username);
+  }
+
+  getUserName() {
+    return this.username.getAttribute('value');
+  }
+
+  clearUserName() {
+    this.username.clear();
+  }
+
+  setPassword(password) {
+    this.password.sendKeys(password);
+  }
+
+  getPassword() {
+    return this.password.getAttribute('value');
+  }
+
+  clearPassword() {
+    this.password.clear();
+  }
+
+  login(username: string, password: string) {
+    // Entering non angular site, tell webdriver to switch to synchronous mode.
+    browser.waitForAngularEnabled(false);
+    this.username.isPresent().then(() => {
+      this.username.sendKeys(username);
+      this.password.sendKeys(password);
+      this.oktaLoginButton.click();
+    }).catch(error => {
+      browser.waitForAngularEnabled(true);
+    });
+  }
+
+  clickLoginButton() {
+    return this.loginButton.click();
+  }
+
+  logout() {
+    return this.logoutButton.click();
+  }
 }
 ```
 
-The only drawback to this technique is you'll have to build your project (with `npm run build` so the `www` is populated) before running it. It's a good idea to do a prod build (`npm run build --prod`) before running e2e tests anyway, so this drawback is actually a good practice.
+Then create `crypto-pwa/e2e/spec/login.e2e-spec.ts` with tests that ensure a login button exists, that invalid credentials results in an error, valid credentials shows a welcome message, and that you can logout successfully.
 
-Even better, you can automate it with continuous integration! We'll get to that in a minute. First, create a `e2e/spec/holdings.e2e-spec.ts` that logs into Okta and verifies you can add/remove holdings.
+```ts
+import { browser, element, by, protractor, ExpectedConditions as ec } from 'protractor';
+import { LoginPage } from '../pages/login.po';
 
+describe('Login', () => {
+
+  let loginPage;
+
+  beforeAll(() => {
+    loginPage = new LoginPage();
+    loginPage.navigateTo('/');
+    browser.waitForAngular();
+  });
+
+  it('should show a login button', () => {
+    expect(loginPage.getHeader()).toMatch(/Login/);
+    expect(loginPage.loginButton.isPresent());
+  });
+
+  it('should fail to log in with bad password', () => {
+    loginPage.clickLoginButton();
+    loginPage.login('admin', 'foo');
+    const error = element.all(by.css('.infobox-error')).first();
+    browser.wait(ec.visibilityOf(error), 2000).then(() => {
+      expect(error.getText()).toMatch("Sign in failed!");
+    });
+  });
+
+  it('should log in successfully with demo account', () => {
+    loginPage.clearUserName();
+    loginPage.setUserName(process.env.E2E_USERNAME);
+    loginPage.clearPassword();
+    loginPage.setPassword(process.env.E2E_PASSWORD);
+    loginPage.oktaLoginButton.click();
+
+    const welcome = /Welcome/; // Use /Welcome, First Last/ if you want to verify full name
+    const success = element.all(by.css('h1')).first();
+    browser.wait(ec.visibilityOf(success), 5000).then(() => {
+      expect(success.getText()).toMatch(welcome);
+    });
+  });
+
+  it('should log out successfully', () => {
+    loginPage.logout();
+    browser.wait(ec.urlContains('/#/login'), 2000);
+    expect(loginPage.loginButton.isPresent());
+  })
+});
 ```
 
+The `process.env.*` variables provide a convenient way to store credentials in environment variables, so you're not exposing them in your source control system. You'll need to define `E2E_USERNAME` and `E2E_PASSWORD` environment variables in order for this test to pass. The values should match valid credentials in your Okta tenant.
+
+After you've defined them and verified they're set properly, start the Spring Boot app using `mvn` in one terminal, then run the following commands in the `crypto-pwa` directory.
+
+```bash
+npm run build --prod
+npm run e2e
 ```
 
-## Continuous Integration and Delivery
+When everything passes, give yourself a pat on the back &mdash; you're well on your way to being an experience TypeScript tester!
 
-Having tests is great, but you know what's better? Running them every time a pull request (PR) is created for your project. You do use Git to store your projects in source don't you?! I'll assume you do. I mean, I know you're a smart developer if you're reading this. Friends don't let friends write authentication, and you're here so you don't have to, right? ;)
+## Continuous Integration with Travis CI
 
-Two of the most populate CI servers are [Travis CI](https://travis-ci.org/) and [Jenkins](https://jenkins.io/), so we'll cover how to use those.
+Having tests is great, but you know what's better? Running them every time a pull request (PR) is created for your project. You do use Git to store your projects in source don't you?! I'll assume you do. I mean, I know you're a smart developer if you're reading this. Friends don't let friends write authentication, and you're here so you don't have to, right? 😉
+
+Two of the most populate CI servers are [Travis CI](https://travis-ci.org/) and [Jenkins](https://jenkins.io/). Since Travis doesn't require any local setup, we'll wrap this post up with a quick overview of how to use it.
 
 ### Travis CI
 
 If you've checked your project in to [GitHub](https://github.com/), you can use Travis CI.
 
 1. Log in to [Travis CI](https://travis-ci.org/) and enable builds for the GitHub repo you published the project to.
-2. Add the following `.travis.yml` in your root directory, create a branch for it, and `git commit/push` it. This will trigger the first build.
+2. Add the following `.travis.yml` in your root directory, create a branch for it (e.g., `git branch -b ci`), and `git commit/push` it.
 
     ```yaml
     os:
@@ -641,10 +945,10 @@ If you've checked your project in to [GitHub](https://github.com/), you can use 
       - npm install -g ionic@3.20.0
     script:
       - chmod +x holdings-api/mvnw
-      - cd holdings-api && ./mvnw clean test
-      - cd ../crypto-pwa && npm test
-      - cd ../holdings-api/mvnw spring-boot:run &
-      - cd ../crypto-pwa && ionic serve
+      - cd holdings-api && ./mvnw -q clean verify
+      - cd ../crypto-pwa && npm i && npm test
+      - cd ../holdings-api/mvnw -q spring-boot:run &
+      - cd ../crypto-pwa && npm run build --prod
       - npm run e2e
     notifications:
       webhooks:
@@ -653,100 +957,31 @@ If you've checked your project in to [GitHub](https://github.com/), you can use 
         on_start: false
     ```
 
-This script will run your Spring Boot tests with Java 8, run the Jest tests, start the backend, start the frontend, and then run Protractor tests to verify everything works. You can see a successful build using this script in the screenshot below.
+3. Navigate to your GitHub repo in a browser and create a pull request with the branch you just pushed. This will kick off processes in Travis to test your branch.
 
-// TODO: Add image
+The `.travis.yml` script above will run your Spring Boot tests with Java 8, run the Jest tests, start the backend, start the frontend, and then run Protractor tests to verify everything works.
 
-### Jenkins
+**NOTE:** You might notice that the Java unit tests and integration tests are run with `./mvnw verify`, rather than as two separate commands. This is because `mvn test` only runs unit tests and `mvn verify` runs both unit tests *and* integration tests.
 
-A Jenkins script defines different stages for testing your application in Jenkins. Put the code below in a `Jenkinsfile` file at the root of your application, and check it in to source control.
+When Travis first runs this script, you'll likely see an error like the one below.
 
-```groovy
-#!/usr/bin/env groovy
+{% img blog/cryptocurrency-pwa-java-sdk-testing/travis-required-keys.png alt:"Travis failure" width:"800" %}{: .center-image }
 
-node {
-    stage('checkout') {
-        checkout scm
-    }
+This happens because the `E2E_USERNAME` and `E2E_PASSWORD` environment variables aren't set. Travis makes it [easy to set encrypted environment variables](https://docs.travis-ci.com/user/environment-variables/#Defining-encrypted-variables-in-.travis.yml). Perform the steps below to set these up for your build.
 
-    stage('check java and node') {
-        sh "java -version"
-        sh "node -version"
-    }
+1. Install the `travis` gem using `gem install travis`.
+2. In the root directory of your repo, run the following command to create encrypted environment variables for the username, password, and the API token. This command assumes you already have these values defined locally.
 
-    stage('clean') {
-        sh "chmod +x ./holdings-api/mvnw"
-        sh "./holdings-api/mvnw clean"
-    }
+    ```
+    travis encrypt E2E_USERNAME=$E2E_USERNAME \
+        E2E_PASSWORD=$E2E_PASSWORD OKTA_CLIENT_TOKEN=$OKTA_CLIENT_TOKEN --add env.matrix
+    ```
 
-    stage('install tools') {
-        sh "cd crypto-pwa && npm install"
-    }
+3. Commit and push this change and your next build should succeed.
 
-    stage('backend tests') {
-        try {
-            sh "./holdings-api/mvnw test"
-        } catch(err) {
-            throw err
-        } finally {
-            junit '**/target/**/TEST-*.xml'
-        }
-    }
+You can see a successful build in the screenshot below.
 
-    stage('frontend tests') {
-        try {
-            sh "cd crypto-pwa && npm test"
-        } catch(err) {
-            throw err
-        }
-    }
 
-    stage('protractor tests') {
-        sh '''./holdings-api/mvnw spring-boot:run &
-        bootPid=$!
-        sleep 60s
-        cd crypto-pwa && npm run e2e
-        kill $bootPid
-        '''
-    }
-
-    stage('packaging') {
-        sh "./holdings-api/mvnw package"
-        sh "cd crypto-pwa && npm run ionic:build --prod"
-        archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-        archiveArtifacts artifacts: '**/www/**', fingerprint: true
-    }
-}
-```
-
-**TIP:** If you want to add JUnit reporting to your Jest tests, see [jest-junit](https://www.npmjs.com/package/jest-junit).
-
-To test this application with Jenkins, I [downloaded](https://jenkins.io/download/) `jenkins.war` to `/opt/tools/jenkins` on my MacBook Pro. I started it with the following command.
-
-```
-java -jar jenkins.war --httpPort=9000
-```
-
-To log in to Jenkins, I navigated to `http://localhost:9000`. I copied the password from the startup log file and pasted
-into the unlock Jenkins page.
-
-<!-- MR: re-do these images with the 'demo' profile -->
-
-{% img blog/java-testing-guide/unlock-jenkins.png alt:"Unlock Jenkins" width:"800" %}{: .center-image }
-
-Next, I chose to install selected plugins and waited while everything installed.
-
-{% img blog/java-testing-guide/customize-jenkins.png alt:"Customize Jenkins" width:"800" %}{: .center-image }
-
-I created a new job called "Bootiful Crypto PWA" with a Pipeline script from SCM. I configured a "Poll SCM" build trigger with a schedule of `H/5 * * * *`. After saving the job, I confirmed it ran successfully.
-
-// TODO: Add image
-
-You might notice that I haven't mentioned continuous deployment. This can be added by simply adding a new stage to your `Jenkinsfile`, or adding more configuration to `.travis.yml`.
-
-For example:
-
-// Add example with Firebase (for Travis) and Cloud Foundry or Heroku (for Jenkins)
 
 ## Code Coverage Tools
 
