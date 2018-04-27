@@ -164,7 +164,7 @@ export class LoginComponent {
   signIn;
 
   widget = new OktaSignIn({
-    baseUrl: 'https://{yourOktaDomain}.com'
+    baseUrl: 'https://{yourOktaDomain}'
   });
 
   constructor(oktaAuth: OktaAuthService, router: Router) {
@@ -223,7 +223,7 @@ import { ProtectedComponent } from './protected.component';
 import { LoginComponent } from './login.component';
 
 const config = {
-  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
   redirectUri: 'http://localhost:4200/implicit/callback',
   clientId: '{clientId}'
 }

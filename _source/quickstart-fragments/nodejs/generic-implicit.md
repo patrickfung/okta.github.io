@@ -13,7 +13,7 @@ Okta has created a simplified Node library to make this easy for Okta applicatio
 const OktaJwtVerifier = require('@okta/jwt-verifier');
 
 const oktaJwtVerifier = new OktaJwtVerifier({
-  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
   assertClaims: {
     aud: 'api://default'
   }

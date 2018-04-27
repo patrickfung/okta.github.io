@@ -41,7 +41,7 @@ curl -v -X GET \
 -H "Accept: application/json" \
 -H "Content-Type: application/json" \
 -H "Authorization: SSWS ${api_token}" \
-"https://{yourOktaDomain}.com/api/v1/meta/schemas/user/default"
+"https://{yourOktaDomain}/api/v1/meta/schemas/user/default"
 ~~~
 
 ##### Response Example
@@ -51,7 +51,7 @@ curl -v -X GET \
 
 ~~~json
 {
-    "id": "https://{yourOktaDomain}.com/meta/schemas/user/default",
+    "id": "https://{yourOktaDomain}/meta/schemas/user/default",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "name": "user",
     "title": "Default Okta User",
@@ -196,7 +196,7 @@ curl -v -X POST \
         "required": []
       }
     }
-}' "https://{yourOktaDomain}.com/api/v1/meta/schemas/user/default"
+}' "https://{yourOktaDomain}/api/v1/meta/schemas/user/default"
 ~~~
 
 ##### Response Example
@@ -206,7 +206,7 @@ curl -v -X POST \
 
 ~~~json
 {
-    "id": "https://{yourOktaDomain}.com/meta/schemas/user/default",
+    "id": "https://{yourOktaDomain}/meta/schemas/user/default",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "name": "user",
     "title": "Default Okta User",
@@ -387,7 +387,7 @@ curl -v -X POST \
       }
     }
   }
-}' "https://{yourOktaDomain}.com/api/v1/meta/schemas/user/default"
+}' "https://{yourOktaDomain}/api/v1/meta/schemas/user/default"
 ~~~
 
 ##### Response Example
@@ -397,7 +397,7 @@ curl -v -X POST \
 
 ~~~json
 {
-    "id": "https://{yourOktaDomain}.com/meta/schemas/user/default",
+    "id": "https://{yourOktaDomain}/meta/schemas/user/default",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "name": "user",
     "title": "Default Okta User",
@@ -548,7 +548,7 @@ curl -v -X POST \
       }
     }
   }
-}' "https://{yourOktaDomain}.com/api/v1/meta/schemas/user/default"
+}' "https://{yourOktaDomain}/api/v1/meta/schemas/user/default"
 ~~~
 
 ##### Response Example
@@ -558,7 +558,7 @@ curl -v -X POST \
 
 ~~~json
 {
-    "id": "https://{yourOktaDomain}.com/meta/schemas/user/default",
+    "id": "https://{yourOktaDomain}/meta/schemas/user/default",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "name": "user",
     "title": "Default Okta User",
@@ -682,7 +682,7 @@ curl -v -X GET \
 -H "Accept: application/json" \
 -H "Content-Type: application/json" \
 -H "Authorization: SSWS ${api_token}" \
-"https://{yourOktaDomain}.com/api/v1/meta/schemas/apps/{instanceId}/default"
+"https://{yourOktaDomain}/api/v1/meta/schemas/apps/{instanceId}/default"
 ~~~
 
 ##### Response Example
@@ -690,7 +690,7 @@ curl -v -X GET \
 
 ~~~json
 {
-  "id": "https://{yourOktaDomain}.com/meta/schemas/apps/0oa25gejWwdXNnFH90g4/default",
+  "id": "https://{yourOktaDomain}/meta/schemas/apps/0oa25gejWwdXNnFH90g4/default",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "name": "Example App",
   "title": "Example App User",
@@ -785,7 +785,7 @@ curl -v -X POST \
       }
     }
   }
-}' "https://{yourOktaDomain}.com/api/v1/meta/schemas/apps/{instanceId}/default"
+}' "https://{yourOktaDomain}/api/v1/meta/schemas/apps/{instanceId}/default"
 ~~~
 
 ##### Response Example
@@ -793,7 +793,7 @@ curl -v -X POST \
 
 ~~~json
 {
-  "id": "https://{yourOktaDomain}.com/meta/schemas/apps/0oa25gejWwdXNnFH90g4/default",
+  "id": "https://{yourOktaDomain}/meta/schemas/apps/0oa25gejWwdXNnFH90g4/default",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "name": "Example App",
   "title": "Example App User",
@@ -896,7 +896,7 @@ curl -v -X POST \
       }
     }
   }
-}' "https://{yourOktaDomain}.com/api/v1/meta/schemas/apps/{instanceId}/default"
+}' "https://{yourOktaDomain}/api/v1/meta/schemas/apps/{instanceId}/default"
 ~~~
 
 ##### Response Example
@@ -904,7 +904,7 @@ curl -v -X POST \
 
 ~~~json
 {
-  "id": "https://{yourOktaDomain}.com/meta/schemas/apps/0oa25gejWwdXNnFH90g4/default",
+  "id": "https://{yourOktaDomain}/meta/schemas/apps/0oa25gejWwdXNnFH90g4/default",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "name": "Example App",
   "title": "Example App User",
@@ -1002,7 +1002,7 @@ curl -v -X POST \
       }
     }
   }
-}' "https://{yourOktaDomain}.com/api/v1/meta/schemas/apps/{instanceId}/default"
+}' "https://{yourOktaDomain}/api/v1/meta/schemas/apps/{instanceId}/default"
 ~~~
 
 ##### Response Example
@@ -1010,7 +1010,7 @@ curl -v -X POST \
 
 ~~~json
 {
-  "id": "https://{yourOktaDomain}.com/meta/schemas/apps/0oa25gejWwdXNnFH90g4/default",
+  "id": "https://{yourOktaDomain}/meta/schemas/apps/0oa25gejWwdXNnFH90g4/default",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "name": "Example App",
   "title": "Example App User",
@@ -1065,7 +1065,7 @@ The [User Model](users#user-model) schema is defined using [JSON Schema Draft 4]
 
 ~~~json
 {
-    "id": "https://{yourOktaDomain}.com/meta/schemas/user/default",
+    "id": "https://{yourOktaDomain}/meta/schemas/user/default",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "name": "user",
     "title": "Default Okta User",
@@ -1410,7 +1410,7 @@ The [App User Model](apps#application-user-model) schema is defined using [JSON 
 
 ~~~json
 {
-  "id": "https://{yourOktaDomain}.com/meta/schemas/apps/0oa25gejWwdXNnFH90g4/default",
+  "id": "https://{yourOktaDomain}/meta/schemas/apps/0oa25gejWwdXNnFH90g4/default",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "name": "Example App",
   "title": "Example App User",

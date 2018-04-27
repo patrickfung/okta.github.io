@@ -253,9 +253,9 @@ grails:
                     okta:
                         api_key: '<Okta Client ID>'         
                         api_secret: '<Okta Client Secret>'
-                        userInfoUrl: 'https://{yourOktaDomain}.com/oauth2/v1/userinfo'
-                        authorizeUrl: 'https://{yourOktaDomain}.com/oauth2/v1/authorize'
-                        tokenUrl: 'https://{yourOktaDomain}.com/oauth2/v1/token'
+                        userInfoUrl: 'https://{yourOktaDomain}/oauth2/v1/userinfo'
+                        authorizeUrl: 'https://{yourOktaDomain}/oauth2/v1/authorize'
+                        tokenUrl: 'https://{yourOktaDomain}/oauth2/v1/token'
                         scopes: 'email profile openid'
 ```
 
