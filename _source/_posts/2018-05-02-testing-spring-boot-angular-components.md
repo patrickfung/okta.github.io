@@ -1504,7 +1504,7 @@ The `codecov` command is smart enough to find the `jacoco.xml` files on the Java
 
 **TIP:** Codecov [allows you to add `unittests`, `integration`, and `ui` flags](https://docs.codecov.io/docs/flags) in your code to group types of tests.
 
-You can [configure Codecov]((https://github.com/apps/codecov)) to report on your GitHub pull requests too! If you don’t see your org listed on the previous page, you should be able to navigate directly to it. For example, this project’s direct link is https://codecov.io/gh/oktadeveloper/okta-ionic-crypto-java-sdk-example.
+You can [configure Codecov](https://github.com/apps/codecov) to report on your GitHub pull requests too! If you don’t see your org listed on the previous page, you should be able to navigate directly to it. For example, this project’s direct link is https://codecov.io/gh/oktadeveloper/okta-ionic-crypto-java-sdk-example.
 
 See [okta-ionic-crypto-java-sdk-example#6](https://github.com/oktadeveloper/okta-ionic-crypto-java-sdk-example/pull/6) for a pull request that adds code coverage.
 
