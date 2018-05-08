@@ -761,7 +761,7 @@ Login to your Okta account, or [create one](https://developer.okta.com/signup/) 
 
 {% img blog/angular-oidc/oidc-settings.png alt:"OIDC App Settings" width:"700" %}{: .center-image }
 
-Install [Manfred Steyer's](https://github.com/manfredsteyer) project to [add OAuth 2 and OpenID Connect support](https://github.com/manfredsteyer/angular-oauth2-oidc) using npm. You'll also need [[rxjs-compat](https://www.npmjs.com/package/rxjs-compat) since this library has not been upgraded to RxJS 6.
+Install [Manfred Steyer's](https://github.com/manfredsteyer) project to [add OAuth 2 and OpenID Connect support](https://github.com/manfredsteyer/angular-oauth2-oidc) using npm. You'll also need [rxjs-compat](https://www.npmjs.com/package/rxjs-compat) since this library has not been upgraded to RxJS 6.
 
 ```bash
 npm install angular-oauth2-oidc rxjs-compat
